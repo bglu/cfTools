@@ -13,58 +13,46 @@ public class CFDbUrlParserTest {
 
     private final static String MOCK_DATABASE_URL = "mysql://testuser:testpassword@127.168.178.21:3306/dbname";
 
+    private final static Map<String, String> enironment         = mockEnvironment();
+    private final static Map<String, String> emptyEnvironment   = new HashMap<String, String>();
+
+    private final static CFDbUrlParser parser           = new CFDbUrlParser(enironment);
+    private final static CFDbUrlParser parserWithoutEnv = new CFDbUrlParser(emptyEnvironment);
+
     @Test
     public void it_should_parse_the_jdbc_url(){
-        Map<String, String> environment = mockEnvironment();
-        CFDbUrlParser parser = new CFDbUrlParser(environment);
-
         String url = parser.getUrl();
         assertEquals("jdbc:mysql://127.168.178.21:3306/dbname", url);
     }
 
     @Test
     public void jdbc_url_should_be_null_when_env_not_set(){
-        Map<String, String> environment = new HashMap<String, String>();
-        CFDbUrlParser parser = new CFDbUrlParser(environment);
-
-        String url = parser.getUrl();
+        String url = parserWithoutEnv.getUrl();
         assertNull(url);
     }
 
 
     @Test
     public void it_should_parse_the_user(){
-        Map<String, String> environment = mockEnvironment();
-        CFDbUrlParser parser = new CFDbUrlParser(environment);
-
         String user = parser.getUser();
         assertEquals("testuser", user);
     }
 
     @Test
     public void user_should_be_null_when_env_not_set(){
-        Map<String, String> environment = new HashMap<String, String>();
-        CFDbUrlParser parser = new CFDbUrlParser(environment);
-
-        String user = parser.getUser();
+        String user = parserWithoutEnv.getUser();
         assertNull(user);
     }
 
     @Test
     public void it_should_parse_the_password(){
-        Map<String, String> environment = mockEnvironment();
-        CFDbUrlParser parser = new CFDbUrlParser(environment);
-
         String password = parser.getPassword();
         assertEquals("testpassword", password);
     }
 
     @Test
     public void password_should_be_null_when_env_not_set(){
-        Map<String, String> environment = new HashMap<String, String>();
-        CFDbUrlParser parser = new CFDbUrlParser(environment);
-
-        String password = parser.getPassword();
+        String password = parserWithoutEnv.getPassword();
         assertNull(password);
     }
 
